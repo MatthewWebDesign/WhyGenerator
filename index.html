@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goraiseit - Generate Why</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%); 
+            color: #ffffff; 
+            margin: 0; 
+            padding: 0; 
+            overflow-x: hidden; 
+            min-height: 100vh;
+        }
+        #particles-js { 
+            position: fixed; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 0; 
+            top: 0;
+            left: 0;
+        }
+        .container { 
+            position: relative;
+            z-index: 1;
+            background-color: transparent;
+            padding: 40px; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-section {
+            background-color: rgba(30, 30, 30, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: none;
+            pointer-events: none;
+        }
+        h1 { 
+            font-size: 3rem; 
+            font-weight: 700; 
+            margin-bottom: 10px; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+        }
+        h3 { 
+            font-size: 1.2rem; 
+            font-weight: 400; 
+            margin-bottom: 30px; 
+            color: #ff6f00; 
+        }
+        .form-control { 
+            background-color: rgba(255, 255, 255, 0.95); 
+            color: #121212; 
+            border: none; 
+            border-radius: 5px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            transition: all 0.3s ease; 
+            pointer-events: auto;
+        }
+        .form-control:focus { 
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 111, 0, 0.5); 
+            transform: translateY(-2px); 
+        }
+        .btn-primary { 
+            background-color: #121212; 
+            color: #ff6f00; 
+            border: 1px solid #ff6f00; 
+            transition: all 0.3s ease; 
+            pointer-events: auto;
+        }
+        .btn-primary:hover { 
+            background-color: #ff6f00; 
+            color: #121212; 
+            box-shadow: 0 0 10px rgba(255, 111, 0, 0.5); 
+            transform: translateY(-2px); 
+        }
+        .btn-secondary { 
+            background-color: #1e1e1e; 
+            color: #ffffff; 
+            border: 1px solid #ffffff; 
+            transition: all 0.3s ease; 
+            pointer-events: auto;
+        }
+        .btn-secondary:hover { 
+            background-color: #ffffff; 
+            color: #1e1e1e; 
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); 
+            transform: translateY(-2px); 
+        }
+        #whyBox { 
+            background-color: rgba(30, 30, 30, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: none;
+            pointer-events: none;
+            position: relative;
+        }
+        #copyButton {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: #121212;
+            color: #ff6f00;
+            border: 1px solid #ff6f00;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            padding: 0;
+        }
+        #copyButton:hover {
+            background-color: #ff6f00;
+            color: #121212;
+            box-shadow: 0 0 10px rgba(255, 111, 0, 0.5);
+            transform: translateY(-2px);
+        }
+        #whyText { 
+            font-size: 1.2rem; 
+            line-height: 1.5; 
+            margin-bottom: 20px; 
+            white-space: pre-line; /* This preserves line breaks and spaces */
+        }
+        label {
+            pointer-events: auto;
+        }
+        @media (max-width: 768px) { 
+            h1 { font-size: 2.5rem; } 
+            h3 { font-size: 1rem; } 
+            .container { padding: 20px; } 
+            .form-section { padding: 20px; }
+            #whyBox { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="container">
+        <div>
+            <h1 class="text-center">GoRaiseIt Why Generator</h1>
+            <h3 class="text-center mb-4">Generation involves usage of AI. Double check inputs and proof-read for clarity</h3>
+            <div class="form-section">
+                <form class="mt-4" id="formSection">
+                    <div class="form-group">
+                        <label for="orgType" class="text-center d-block">Type of Organization</label>
+                        <select class="form-control" id="orgType" required>
+                            <option value="" disabled selected>Select organization type</option>
+                            <option>School</option>
+                            <option>Club</option>
+                            <option>Charity</option>
+                            <option>Independent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="orgName" class="text-center d-block">Name of Organization</label>
+                        <input type="text" class="form-control" id="orgName" placeholder="Enter the name of your organization" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fundraiserType" class="text-center d-block">Type of Fundraiser</label>
+                        <select class="form-control" id="fundraiserType" required>
+                            <option value="" disabled selected>Select fundraiser type</option>
+                            <option>Event - Fun Run</option>
+                            <option>Event - Fun Run</option>
+                            <option>Product - Pies</option>
+                            <option>Product - Cookies and Croissants</option>
+                            <option>Product - Cookies</option>
+                            <option>Product - Croissants</option>
+                            <option>Product - Rocky Road</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientInfo" class="text-center d-block">Client-Provided Information for Why</label>
+                        <textarea class="form-control" id="clientInfo" rows="3" placeholder="Provide details about why you are fundraising" required></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-block" onclick="generateWhy()">Generate Why</button>
+                </form>
+            </div>
+            <div id="whyBox" style="display: none;">
+                <button type="button" id="copyButton" onclick="copyToClipboard()">
+                    <span id="copyIcon">📋</span>
+                </button>
+                <p class="text-center" id="whyText">Your AI-generated 'why' will appear here.</p>
+                <button type="button" class="btn btn-secondary btn-block mt-3" onclick="goBack()">Back to Form</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#b0b0b0" },
+                "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" } },
+                "opacity": { "value": 0.2, "random": false },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#b0b0b0", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "repulse" },
+                    "onclick": { "enable": true, "mode": "push" },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": { "distance": 140, "line_linked": { "opacity": 1 } },
+                    "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 },
+                    "repulse": { "distance": 200, "duration": 0.4 },
+                    "push": { "particles_nb": 4 },
+                    "remove": { "particles_nb": 2 }
+                }
+            },
+            "retina_detect": true
+        });
+
+        async function generateWhy() {
+            const orgType = document.getElementById('orgType').value;
+            const orgName = document.getElementById('orgName').value;
+            const fundraiserType = document.getElementById('fundraiserType').value;
+            const clientInfo = document.getElementById('clientInfo').value;
+
+            if (!orgType || !orgName || !fundraiserType || !clientInfo) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:3000/api/generate-why', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ orgType, orgName, fundraiserType, clientInfo }),
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+
+                // Convert <br> tags to actual line breaks and normalize spacing
+                let formattedText = data.why.replace(/<br\s*\/?>/gi, '\n');
+                // Remove excessive line breaks (more than 2 consecutive newlines)
+                formattedText = formattedText.replace(/\n{3,}/g, '\n\n');
+                // Clean up any extra whitespace
+                formattedText = formattedText.trim();
+                
+                document.getElementById('whyText').textContent = formattedText;
+                document.querySelector('.form-section').style.display = 'none';
+                document.getElementById('whyBox').style.display = 'block';
+            } catch (error) {
+                document.getElementById('whyText').textContent = `Error: ${error.message}`;
+                document.getElementById('whyBox').style.display = 'block';
+            }
+        }
+
+        async function copyToClipboard() {
+            const whyText = document.getElementById('whyText').textContent;
+            const copyIcon = document.getElementById('copyIcon');
+            const copyButton = document.getElementById('copyButton');
+            
+            try {
+                await navigator.clipboard.writeText(whyText);
+                
+                // Visual feedback - change icon temporarily
+                copyIcon.textContent = '✅';
+                copyButton.style.backgroundColor = '#28a745';
+                copyButton.style.borderColor = '#28a745';
+                copyButton.style.color = '#ffffff';
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    copyIcon.textContent = '📋';
+                    copyButton.style.backgroundColor = '#121212';
+                    copyButton.style.borderColor = '#ff6f00';
+                    copyButton.style.color = '#ff6f00';
+                }, 2000);
+                
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = whyText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    copyIcon.textContent = '✅';
+                    copyButton.style.backgroundColor = '#28a745';
+                    copyButton.style.borderColor = '#28a745';
+                    copyButton.style.color = '#ffffff';
+                } catch (fallbackErr) {
+                    copyIcon.textContent = '❌';
+                    copyButton.style.backgroundColor = '#dc3545';
+                    copyButton.style.borderColor = '#dc3545';
+                    copyButton.style.color = '#ffffff';
+                }
+                
+                document.body.removeChild(textArea);
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    copyIcon.textContent = '📋';
+                    copyButton.style.backgroundColor = '#121212';
+                    copyButton.style.borderColor = '#ff6f00';
+                    copyButton.style.color = '#ff6f00';
+                }, 2000);
+            }
+        }
+
+        function goBack() {
+            document.getElementById('whyBox').style.display = 'none';
+            document.querySelector('.form-section').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
