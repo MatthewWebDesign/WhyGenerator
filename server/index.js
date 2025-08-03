@@ -4,11 +4,22 @@ const fetch = require('node-fetch');
 require('dotenv').config();
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000; // Changed this line
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Root route - ADD THIS
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Fundraiser API Server is running!',
+    endpoints: {
+      health: '/health',
+      generateWhy: 'POST /api/generate-why'
+    }
+  });
+});
 
 // Generate Why endpoint
 app.post('/api/generate-why', async (req, res) => {
@@ -20,7 +31,7 @@ app.post('/api/generate-why', async (req, res) => {
     }
 
     // Create a more detailed prompt for Gemini
-    const prompt = `You are writing a formal peice of text, with 2 or 3 segments of text totalling 100-150 words. The peice of text serves as a “Why” statement for a fundraising campaign, telling donors what the organisation (of which you will receive details about) is fundraising for.
+    const prompt = `You are writing a formal peice of text, with 2 or 3 segments of text totalling 100-150 words. The peice of text serves as a "Why" statement for a fundraising campaign, telling donors what the organisation (of which you will receive details about) is fundraising for.
     the segments will be seperated by a line. the first segment will state what type of fundraiser it is. if the type is event - talk about how the school is running an event etc, if it is product say they are selling a product to... 
     for the second segment can you talk about what the money is for - utilise cliet info for this. and for the third segment talk about how that will benefit the students/people of the organisation, as well as thanking poeple for their generosity. 
 
@@ -34,7 +45,7 @@ You will mimick the writing style of the below examples. START OF EXAMPLES:
 Who: Te Awamutu Intermediate Netball, Event: Product - Frozen Cookies
 Why: We are fundraising to send our netball team to AIMS games
 
-Te Awamutu Intermediate Netball is selling delicious frozen cookie dough to fundraiser for our team’s trip to the Zespri AIMS Games 2025 in Tauranga this September.
+Te Awamutu Intermediate Netball is selling delicious frozen cookie dough to fundraiser for our team's trip to the Zespri AIMS Games 2025 in Tauranga this September.
 
 Funds raised will help cover the costs of our week long stay and give our players the chance to compete, learn, and create unforgettable memories at this fantastic national event. 
 
@@ -66,7 +77,7 @@ Students will be seeking online sponsorship for their participation, with all fu
 
 Thank you for supporting Northcross Intermediate School.
 
-Who: St Mary’s School Caterton, Event: Product - Popcorn, 
+Who: St Mary's School Caterton, Event: Product - Popcorn, 
 Why: Fundraising for outdoor heaters in newly covered quad
 
 St Mary's School Carterton is selling delicious gourmet popcorn to raise funds for outdoor heaters in our newly covered quad.
@@ -131,6 +142,6 @@ app.get('/health', (req, res) => {
   res.json({ status: 'Server is running!' });
 });
 
-app.listen(port, () => {
-  console.log(`✅ Server running at http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`✅ Server running at http://localhost:${PORT}`);
 });
